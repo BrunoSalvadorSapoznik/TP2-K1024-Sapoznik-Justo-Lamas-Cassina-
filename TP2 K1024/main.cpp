@@ -21,9 +21,21 @@ int NroArticulo;
 };
 
 
+void CargarArchivoUsuarios(FILE *&Cl)
+{
+ Cl=fopen("Clientes.bin","rb+");
+
+ if(Cl )
+    cout<<"Archivos Clientes cargado exitosamente"<<endl;
+}
+
+
 
 int main()
 {
+FILE *U;
+
+CargarArchivoUsuarios(U);
 
     return 0;
 }
