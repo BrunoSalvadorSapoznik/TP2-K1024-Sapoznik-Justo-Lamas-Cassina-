@@ -37,5 +37,8 @@ FILE *U;
 
 CargarArchivoUsuarios(U);
 
+cout<<"hola"<<endl;
+
+
     return 0;
 }
