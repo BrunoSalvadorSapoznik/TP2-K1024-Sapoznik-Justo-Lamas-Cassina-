@@ -20,7 +20,6 @@ int NroArticulo;
 
 };
 
-
 void CargarArchivoUsuarios(FILE *&Cl)
 {
  Cl=fopen("Clientes.bin","rb+");
@@ -29,15 +28,13 @@ void CargarArchivoUsuarios(FILE *&Cl)
     cout<<"Archivos Clientes cargado exitosamente"<<endl;
 }
 
-
-
 int main()
 {
 FILE *U;
 
 CargarArchivoUsuarios(U);
 
-cout<<"hola"<<endl;
+
 
 
     return 0;
