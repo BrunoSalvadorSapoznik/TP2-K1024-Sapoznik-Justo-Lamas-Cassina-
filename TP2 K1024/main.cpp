@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 #include <string.h>
+#define Usuario1=1
 struct Usuario
 {
     int ID;
@@ -17,7 +18,6 @@ struct ListaUsuarios
 
     ListaUsuarios *sigUs;
 };
-
 struct Compra
 {
     int CompraID;
@@ -26,6 +26,11 @@ struct Compra
     int UsuarioID;
     int NroArticulo;
 
+};
+
+struct ListaCompras
+{ Compra compra;
+   ListaCompras *sigCompra;
 };
 
 void CargarArchivoUsuarios(ListaUsuarios *&inicio)
@@ -129,6 +134,8 @@ void ListarUsuarios (ListaUsuarios *indx)
     }
 }
 
+
+
 int OpcionesMenu()
 {
     int opcion;
@@ -209,11 +216,60 @@ int main()
 {
     ListaUsuarios *inicioListaUsuarios=NULL;
     CargarArchivoUsuarios(inicioListaUsuarios);
+    ListaCompras*pauxLC;
     Menu(inicioListaUsuarios);
 
+ListaCompras *inicioListaCompras;
+//Compra numero 1
+inicioListaCompras= new ListaCompras();
+inicioListaCompras->compra.CompraID=2;
+inicioListaCompras->compra.NroArticulo=3;
+inicioListaCompras->compra.UsuarioID=3;
+inicioListaCompras->sigCompra=new ListaCompras();
+pauxLC=inicioListaCompras->sigCompra;
+
+//compra numero 2
+pauxLC->compra.CompraID=;
+pauxLC->compra.FechaHora=:
+pauxLC->compra.Monto=;
+pauxLC->compra.NroArticulo=;
+pauxLC->compra.UsuarioID=;
+pauxLC->sigCompra=new ListaCompras();
+paux=pauxLC->sigCompra;
+
+// compra numero 3
+
+pauxLC->compra.CompraID=;
+pauxLC->compra.FechaHora=:
+pauxLC->compra.Monto=;
+pauxLC->compra.NroArticulo=;
+pauxLC->compra.UsuarioID=;
+pauxLC->sigCompra=new ListaCompras();
+paux=pauxLC->sigCompra;
+// compra numero 4
+pauxLC->compra.CompraID=;
+pauxLC->compra.FechaHora=:
+pauxLC->compra.Monto=;
+pauxLC->compra.NroArticulo=;
+pauxLC->compra.UsuarioID=;
+pauxLC->sigCompra=new ListaCompras();
+pauxpauxLC->sigCompra;
+
+//compra numero 5
+pauxLC->compra.CompraID=;
+pauxLC->compra.FechaHora=:
+pauxLC->compra.Monto=;
+pauxLC->compra.NroArticulo=;
+pauxLC->compra.UsuarioID=;
+pauxLC->sigCompra=new ListaCompras();
+pauxpauxLC->sigCompra=NULL;
 
 
 
 
+
+
+BorrarLista(inicioListaUsuarios);
+BorrarLista(inicioListaCompras);
     return 0;
 }
