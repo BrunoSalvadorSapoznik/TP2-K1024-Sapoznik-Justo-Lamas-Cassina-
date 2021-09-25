@@ -66,62 +66,65 @@ void CargarArchivoUsuarios(ListaUsuarios *&inicio)
                 //mover puntero hacia locación actual
 
 
-           fseek(archLU,sizeof(ListaUsuarios)*loop,SEEK_SET);
+                fseek(archLU,sizeof(ListaUsuarios)*loop,SEEK_SET);
 
-                         if(loop==0)
-                         {
-                             cout<<" PRIMER ELEMENTO "<<endl;
-                             inicio= new ListaUsuarios();
+                if(loop==0)
+                {
+                    cout<<" PRIMER ELEMENTO "<<endl;
+                    inicio= new ListaUsuarios();
 
-                             fread(inicio,sizeof(ListaUsuarios),1,archLU);
-                             inicio->sigUs=paux;
-                             panterior=inicio;
+                    fread(inicio,sizeof(ListaUsuarios),1,archLU);
+                    inicio->sigUs=paux;
+                    panterior=inicio;
 
-                             //puntero que almacene el anterior para luego vincularlo
-                         }
+                    //puntero que almacene el anterior para luego vincularlo
+                }
 
-                         else
-                         {
-                             fread(p2aux,sizeof(ListaUsuarios),1,archLU);
-                             while(paux && paux->usuarioact.TotalImporteCompras<p2aux->usuarioact.TotalImporteCompras )
-                             {
-                                 panterior=paux;
-                                 paux=paux->sigUs;
-                             }
-                             if(paux!=inicio)
-                               {
-                                panterior->sigUs= new ListaUsuarios();
-                                 fread(panterior->sigUs,sizeof(ListaUsuarios),1,archLU);
-                                 panterior->sigUs->sigUs=paux;
+                else
+                {
+                    fread(p2aux,sizeof(ListaUsuarios),1,archLU);
+                    while(paux && paux->usuarioact.TotalImporteCompras<p2aux->usuarioact.TotalImporteCompras )
+                    {
+                        panterior=paux;
+                        paux=paux->sigUs;
+                    }
+                    if(paux!=inicio)
+                    {
+                        panterior->sigUs= new ListaUsuarios();
+                        fread(panterior->sigUs,sizeof(ListaUsuarios),1,archLU);
+                        panterior->sigUs->sigUs=paux;
 
-                        }
-                        /*
-                             panterior->sigUs= new ListaUsuarios();
-                             paux=panterior->sigUs;
-                             fread(paux,sizeof(ListaUsuarios),1,archLU);
-                             paux->sigUs=NULL;
-                             panterior=paux;
+                    }
+                    /*
+                         panterior->sigUs= new ListaUsuarios();
+                         paux=panterior->sigUs;
+                         fread(paux,sizeof(ListaUsuarios),1,archLU);
+                         paux->sigUs=NULL;
+                         panterior=paux;
 
-                             // cout<<"nuevoElemento"<<paux->usuarioact.ID<<endl;
-                         }
-
+                         // cout<<"nuevoElemento"<<paux->usuarioact.ID<<endl;
                      }
-*/
 
-                fclose(archLU);
-                return ;
+                    }
+                    */
+
+                    fclose(archLU);
+                    return ;
+                }
+    }
+}
+                else
+                {
+                    cout<<"Lista vacía ,agregue elementos"<<endl;
+                    return;
+                }
             }
             else
             {
-                cout<<"Lista vacía ,agregue elementos"<<endl;
-                return;
+                cout<<"falló apertura del archivo lista usuarios"<<endl;
             }
-        }
-        else
-        {
-            cout<<"falló apertura del archivo lista usuarios"<<endl;
-        }
-        //Tamaño de archivo cout<<ftell(archLU)<<endl;
+            //Tamaño de archivo cout<<ftell(archLU)<<endl;
+
     }
 
 void EscribirListaArchivoClientes(ListaUsuarios* inicioListaUsuarios)
