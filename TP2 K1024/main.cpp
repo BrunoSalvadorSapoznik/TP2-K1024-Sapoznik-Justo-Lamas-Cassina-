@@ -430,13 +430,14 @@ void BuscarClientePorIDoMail(ListaUsuarios *inicio)
         cout<<"INGRESE OPCION"<<endl ;
         cout<<"1--> Cargar usuarios (modo desarrollo)"<<endl;
         cout<<"2--> Listar Usuario (modo dev)"<<endl;
-         cout<<"3--Escribir List Usuarios Archvo (modo dev)"<<endl;
+        cout<<"3--Escribir List Usuarios Archivo (modo dev)"<<endl;
         cout<<"4--Agregar nuevo usuario"<<endl;
         cout<<"5--Desactivar usuario Existente"<<endl;
         cout<<"6--Buscar cliente por ID o por mail "<<endl;
         cout<<"7--Listar clientes ordenados por importe (NO DISPONIBLE)"<<endl;
-        cout<<"8-Mostrar compras realizadas de un cliente dado(NO DISPONIBLE"<<endl;
-        cout<<"9--Generar reporte HTML de compras realizadas en dos fechas (NO DISPONIBLE)"<<endl;
+        cout<<"8-Procesar lote de compras (NO DISPONIBLE)"<<endl;
+        cout<<"9-Mostrar compras realizadas de un cliente dado(NO DISPONIBLE)"<<endl;
+        cout<<"10--Generar reporte HTML de compras realizadas en dos fechas (NO DISPONIBLE)"<<endl;
         cout<<"11-- Generar reporte CSV de compras realizadas en dos fechas (NO DISPONIBLE)" <<endl;
         cout<<"12--- Borrar lista"<<endl;
         cout<<"13-Finalizar jornada"<<endl;
@@ -495,14 +496,15 @@ void BuscarClientePorIDoMail(ListaUsuarios *inicio)
                 //ReporteComprasRealizadasEntreFechasCSV();
                 opcion=OpcionesMenu();
                 break;
-            case 13:
-                //FinalizarJornada(opcion);
-                break;
             case 12:
                 // borrar lista  usuariosfuncion prueba;
               BorrarListaUs(inicioListaUsuarios);
               opcion=OpcionesMenu();
               break;
+            case 13:
+                //FinalizarJornada(opcion);
+                break;
+
 
 
             }
