@@ -203,23 +203,25 @@ void AgregarnuevoUSuario(ListaUsuarios *&inicio)
         cout<<"Ingrese Fecha Creación :"<<endl;
         cin>>nuevoUsuario->usuarioact.FechaCreacion;
         nuevoUsuario->usuarioact.activo=true;
-
-        nuevoUsuario->usuarioact.TotalImporteCompras=0;
+        // agregar monto de prueba
+        cout<<"monto de prueba"<<endl;
+        cin>>nuevoUsuario->usuarioact.TotalImporteCompras;
         inicio=nuevoUsuario;
     }
     else
     {
         //lista vacia
         cout<<"lista vacia"<<endl;
-        cout<<"Ingrese usuario"<<endl;
-        cin>>nuevoUsuario->usuarioact.ID;
-        cout<<"Ingrese usuario"<<endl;
+         cout<<"Ingrese  ID usuario"<<endl;
         cin>>nuevoUsuario->usuarioact.ID;
         cout<<"email: "<<endl;
         cin>>nuevoUsuario->usuarioact.eMail;
         cout<<"Ingrese Fecha Creación :"<<endl;
         cin>>nuevoUsuario->usuarioact.FechaCreacion;
-
+        nuevoUsuario->usuarioact.activo=true;
+        // agregar monto de prueba
+        cout<<"monto de prueba"<<endl;
+        cin>>nuevoUsuario->usuarioact.TotalImporteCompras;
         nuevoUsuario->usuarioact.activo=true;
         inicio=nuevoUsuario;
         nuevoUsuario->sigUs=NULL;
@@ -463,6 +465,7 @@ void BuscarClientePorIDoMail(ListaUsuarios *inicio)
             case 2: // verificar que esten listados  correctamente
                 ListarUsuarios(inicioListaUsuarios);
                 opcion=OpcionesMenu();
+                break;
             case 3 ://prueba escritura  archivo USuarios
                     EscribirListaArchivoClientes(inicioListaUsuarios);
                 opcion=OpcionesMenu();
