@@ -233,6 +233,7 @@ void ListarUsuarios (ListaUsuarios *indx)
 
 void AgregarnuevoUSuario(ListaUsuarios *&inicio)
 {
+
     ListaUsuarios *nuevoUsuario;
     nuevoUsuario= new ListaUsuarios;
 
@@ -263,13 +264,12 @@ void AgregarnuevoUSuario(ListaUsuarios *&inicio)
         cout<<"Ingrese Fecha Creación :"<<endl;
         cin>>nuevoUsuario->usuarioact.FechaCreacion;
         nuevoUsuario->usuarioact.activo=true;
-        // agregar monto de prueba
-        cout<<"monto de prueba"<<endl;
-        cin>>nuevoUsuario->usuarioact.TotalImporteCompras;
+
         nuevoUsuario->usuarioact.activo=true;
         inicio=nuevoUsuario;
         nuevoUsuario->sigUs=NULL;
     }
+
 }
 
 void DesactivarUsuarioExistente( ListaUsuarios *&inicio)
