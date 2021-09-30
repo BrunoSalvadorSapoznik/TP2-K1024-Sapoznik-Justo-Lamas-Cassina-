@@ -6,7 +6,7 @@ struct Usuario
 {
     int ID;
     int FechaCreacion;
-    bool activo;
+    bool activo =true;
     float TotalImporteCompras;
     char eMail[26];
 
@@ -35,6 +35,40 @@ struct ListaCompras
     ListaCompras *sigCompra;
 };
 
+void insertarOrdenado(ListaUsuarios *&lista,  ListaUsuarios p2aux)
+{
+    ListaUsuarios *paux = lista;
+    ListaUsuarios *anterior =NULL;
+    while (paux && paux->usuarioact.TotalImporteCompras <p2aux.usuarioact.TotalImporteCompras)
+    {
+        anterior = paux;
+        paux = paux->sigUs;
+    }
+    if ( paux!= lista)
+    {
+        anterior->sigUs = new ListaUsuarios();
+        anterior->sigUs->usuarioact.ID=p2aux.usuarioact.ID;
+         anterior->sigUs->usuarioact.TotalImporteCompras = p2aux.usuarioact.TotalImporteCompras;
+        strcpy(anterior->sigUs->usuarioact.eMail,p2aux.usuarioact.eMail);
+        anterior->sigUs->usuarioact.FechaCreacion=p2aux.usuarioact.FechaCreacion;
+        anterior->sigUs->sigUs= paux;
+
+    }
+    else
+    {
+        cout<<"primer elemento"<<endl;
+        lista= new ListaUsuarios();
+        lista->sigUs =paux;
+        lista->usuarioact.ID = p2aux.usuarioact.ID;
+        lista->usuarioact.FechaCreacion = p2aux.usuarioact.FechaCreacion;
+        lista->usuarioact.TotalImporteCompras = p2aux.usuarioact.TotalImporteCompras;
+         strcpy(lista->usuarioact.eMail,p2aux.usuarioact.eMail);
+
+    }
+    return;
+}
+
+
 void CargarArchivoUsuarios(ListaUsuarios *&inicio)
 {
     FILE *archLU;
@@ -58,74 +92,81 @@ void CargarArchivoUsuarios(ListaUsuarios *&inicio)
             int loop=0;
             paux=inicio;
             ListaUsuarios *panterior=NULL;
-            ListaUsuarios *p2aux;
-            for(loop; loop<numElementos; loop++)
+            ListaUsuarios p2aux;
+            for(loop;loop<numElementos; loop++)
             {
-
-                //   cout<<"loop "<<loop<<endl;
-                //mover puntero hacia locación actual
-
-
                 fseek(archLU,sizeof(ListaUsuarios)*loop,SEEK_SET);
+                fread(&p2aux,sizeof(ListaUsuarios),1,archLU);
+                 cout<<"p2aux.usuarioact.ID "<<p2aux.usuarioact.ID<<endl;
 
-                if(loop==0)
-                {
-                    cout<<" PRIMER ELEMENTO "<<endl;
-                    inicio= new ListaUsuarios();
+                  insertarOrdenado(inicio,p2aux);
 
-                    fread(inicio,sizeof(ListaUsuarios),1,archLU);
-                    inicio->sigUs=paux;
-                    panterior=inicio;
+                /*
 
-                    //puntero que almacene el anterior para luego vincularlo
-                }
+                              //   cout<<"loop "<<loop<<endl;
+                              //mover puntero hacia locación actual
 
-                else
-                {
-                    fread(p2aux,sizeof(ListaUsuarios),1,archLU);
-                    while(paux && paux->usuarioact.TotalImporteCompras<p2aux->usuarioact.TotalImporteCompras )
-                    {
-                        panterior=paux;
-                        paux=paux->sigUs;
-                    }
-                    if(paux!=inicio)
-                    {
-                        panterior->sigUs= new ListaUsuarios();
-                        fread(panterior->sigUs,sizeof(ListaUsuarios),1,archLU);
-                        panterior->sigUs->sigUs=paux;
 
-                    }
-                    /*
-                         panterior->sigUs= new ListaUsuarios();
-                         paux=panterior->sigUs;
-                         fread(paux,sizeof(ListaUsuarios),1,archLU);
-                         paux->sigUs=NULL;
-                         panterior=paux;
 
-                         // cout<<"nuevoElemento"<<paux->usuarioact.ID<<endl;
-                     }
+                              if(loop==0)
+                              {
+                                  cout<<" PRIMER ELEMENTO "<<endl;
+                                  inicio= new ListaUsuarios();
 
-                    }
-                    */
+                                  fread(inicio,sizeof(ListaUsuarios),1,archLU);
+                                  inicio->sigUs=paux;
+                                  panterior=inicio;
 
-                    fclose(archLU);
-                    return ;
-                }
+                                  //puntero que almacene el anterior para luego vincularlo
+                              }
+
+                              else
+                              {
+                                  fread(p2aux,sizeof(ListaUsuarios),1,archLU);
+                                  while(paux && paux->usuarioact.TotalImporteCompras<p2aux->usuarioact.TotalImporteCompras )
+                                  {
+                                      panterior=paux;
+                                      paux=paux->sigUs;
+                                  }
+                                  if(paux!=inicio)
+                                  {
+                                      panterior->sigUs= new ListaUsuarios();
+                                      fread(panterior->sigUs,sizeof(ListaUsuarios),1,archLU);
+                                      panterior->sigUs->sigUs=paux;
+
+                                  }
+                                  /*
+                                       panterior->sigUs= new ListaUsuarios();
+                                       paux=panterior->sigUs;
+                                       fread(paux,sizeof(ListaUsuarios),1,archLU);
+                                       paux->sigUs=NULL;
+                                       panterior=paux;
+
+                                       // cout<<"nuevoElemento"<<paux->usuarioact.ID<<endl;
+
+            */
+        }
+        fclose(archLU);
+        return ;
+    }
+    else
+    {
+        cout<<"Lista vacía ,agregue elementos"<<endl;
+        return;
     }
 }
-                else
-                {
-                    cout<<"Lista vacía ,agregue elementos"<<endl;
-                    return;
-                }
-            }
-            else
-            {
-                cout<<"falló apertura del archivo lista usuarios"<<endl;
-            }
-            //Tamaño de archivo cout<<ftell(archLU)<<endl;
+else
+{
+    cout<<"falló apertura del archivo lista usuarios"<<endl;
+}
 
-    }
+}
+
+    //Tamaño de archivo cout<<ftell(archLU)<<endl;
+
+
+
+
 
 void EscribirListaArchivoClientes(ListaUsuarios* inicioListaUsuarios)
 {
@@ -188,10 +229,13 @@ void ListarUsuarios (ListaUsuarios *indx)
     }
 }
 
+
+
 void AgregarnuevoUSuario(ListaUsuarios *&inicio)
 {
     ListaUsuarios *nuevoUsuario;
     nuevoUsuario= new ListaUsuarios;
+
     if(inicio)
     {
         cout<<"añadir nuevo elemento"<<endl;
