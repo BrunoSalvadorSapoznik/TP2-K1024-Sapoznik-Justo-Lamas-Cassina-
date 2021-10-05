@@ -1,6 +1,7 @@
 #include <iostream>
-using namespace std;
 #include <string.h>
+using namespace std;
+
 
 struct Usuario
 {
@@ -48,7 +49,7 @@ void insertarOrdenado(ListaUsuarios *&lista,  ListaUsuarios p2aux)
     {
         anterior->sigUs = new ListaUsuarios();
         anterior->sigUs->usuarioact.ID=p2aux.usuarioact.ID;
-         anterior->sigUs->usuarioact.TotalImporteCompras = p2aux.usuarioact.TotalImporteCompras;
+        anterior->sigUs->usuarioact.TotalImporteCompras = p2aux.usuarioact.TotalImporteCompras;
         strcpy(anterior->sigUs->usuarioact.eMail,p2aux.usuarioact.eMail);
         anterior->sigUs->usuarioact.FechaCreacion=p2aux.usuarioact.FechaCreacion;
         anterior->sigUs->sigUs= paux;
@@ -164,10 +165,6 @@ else
 
     //Tamaño de archivo cout<<ftell(archLU)<<endl;
 
-
-
-
-
 void EscribirListaArchivoClientes(ListaUsuarios* inicioListaUsuarios)
 {
     FILE *archLU;
@@ -229,8 +226,6 @@ void ListarUsuarios (ListaUsuarios *indx)
     }
 }
 
-
-
 void AgregarnuevoUSuario(ListaUsuarios *&inicio)
 {
 
@@ -276,7 +271,7 @@ void DesactivarUsuarioExistente( ListaUsuarios *&inicio)
 {
     int idbuscada;
     cout<<"ingrese id del usuario"<<endl;
-    ListaUsuarios *paux=inicio;
+    ListaUsuarios *paux=inicio; //ver si es inicio o indx
     cin>>idbuscada;
     if(idbuscada<0)
     {
@@ -307,7 +302,7 @@ void OrdenarListaPorImporte(ListaUsuarios *&inicio)
     paux=inicio;
     ListaUsuarios* psiguiente=NULL;
     ListaUsuarios *p2aux;
-    while(paux  )
+    while(paux)
     {
         if(paux->sigUs!=NULL)
         {
@@ -352,8 +347,8 @@ void OrdenarListaPorImporte(ListaUsuarios *&inicio)
 
 }
 
-    void BorrarListaUs(ListaUsuarios *&inicio)
-    {
+void BorrarListaUs(ListaUsuarios *&inicio)
+{
         ListaUsuarios* paux;
 
 
@@ -376,8 +371,8 @@ void OrdenarListaPorImporte(ListaUsuarios *&inicio)
         cout<<"lista borrada satisfactoriamente "<<endl;
     }
 
-  void BorrarListaCompras(ListaCompras *indx)
-    {
+void BorrarListaCompras(ListaCompras *indx)
+{
         ListaCompras* paux;
         ListaCompras *pactual;
         paux=indx;
@@ -391,8 +386,8 @@ void OrdenarListaPorImporte(ListaUsuarios *&inicio)
         cout<<"lista Compras borrada satisfactoriamente "<<endl;
     }
 
-    void BuscarClientePorID(ListaUsuarios* inicio)
-    {
+void BuscarClientePorID(ListaUsuarios* inicio)
+{
      int idbuscada;
         cout<<"ingrese id del usuario"<<endl;
         ListaUsuarios *paux;
@@ -422,6 +417,7 @@ void OrdenarListaPorImporte(ListaUsuarios *&inicio)
             }
         }
     }
+
 void BuscarClientePorIDoMail(ListaUsuarios *inicio)
 {
     int opcion;
@@ -436,6 +432,107 @@ void BuscarClientePorIDoMail(ListaUsuarios *inicio)
   break;
     }
 }
+
+void ListarClientesImportes (ListaUsuarios *indx)
+{
+
+    cout<<"listando clientes según importes, si está activo"<<endl;
+    ListaUsuarios *paux=indx;//ver si es inicio o indx
+    if(indx!=NULL)
+    {
+        while(indx!=NULL)
+        {
+            if (paux->usuarioact.activo=true){
+            cout<<"dir actual: "<<indx<<endl;
+            cout<<" "<<endl;
+            cout<<"id de usuario "<<indx->usuarioact.ID<<endl;
+            cout<<" "<<endl;
+            cout<<"email de usuario "<<indx->usuarioact.eMail<<endl;
+            cout<<" "<<endl;
+            cout<<"estado de actividad :"<<indx->usuarioact.activo<<endl;
+            cout<<" "<<endl;
+            cout<<"importe actual: "<<indx->usuarioact.TotalImporteCompras<<endl;
+            cout<<" "<<endl;
+            cout<<"fecha de creación: "<<indx->usuarioact.FechaCreacion<<endl;
+            cout<<" "<<endl;
+            cout<<"sig usuario en dir"<<indx->sigUs<<endl;
+            cout<<" "<<endl;
+            if(indx->sigUs==NULL)
+            cout<<"elemento siguiente nulo"<<endl;
+            indx=indx->sigUs;
+            cout<<"ahora indx vale: "<<indx<<endl;
+            cout<<" "<<endl;
+            cout<<"-------------------------------------------"<<endl;
+            cout<<endl;
+            }
+
+        }
+    }
+    else
+    {
+        cout<<"Lista vacía "<<endl;
+    }
+    }
+
+void escribirReporteHTML(ListaCompras *indx)
+{
+    char fecha1[14];
+    char fecha2[14];
+    cout<<"Ingresa las fechas en numeros, con el siguiente formato: añomesdiahora:minutos . Por ejmplo:2021090213:30"<<endl;
+    cout<<"Primero ingrese la fecha más temprana"<<endl;
+    cin>>fecha1;
+    cout<<"Ahora ingrese la fecha más tardía"<<endl;
+    cin>>fecha2;
+    FILE *f;
+    ListaCompras *paux=indx;
+    f = fopen("salidahtml.html", "wt");
+    fprintf(f,"<html><body>\n");
+    fprintf(f,"<h1>Reporte de compras de usuraios</h1>\n");
+    fprintf(f,"<table border=1>\n");
+    fprintf(f,"<th>Compra ID</th><th>Fecha y Hora</th><th>Monto</th><th>Usuario ID</th><th>Nro de Articulo</th>\n");
+    while (indx !=NULL)
+    {
+        if ( strcmp(fecha1,paux->compra.FechaHora)&&  strcmp(paux->compra.FechaHora,fecha2)){
+        fprintf(f,"<tr>\n");
+        fprintf(f,"<td>%d</td><td>%s</td><td>%f</td><td>%d</td><td>%d</td>\n",compra.CompraID, compra.FechaHora,compra.Monto,compra.UsuarioID,compra.NroArticulo);
+        fprintf(f,"</tr>\n");
+        }
+        indx=indx->sigCompra;
+    }
+    fprintf(f, "</table>");
+    fprintf(f, "</body>");
+    fprintf(f, "</html>");
+    fclose(f);
+    return;
+}
+
+void escribirReporteCSV(ListaCompras *indx)
+{
+    char fecha1[14];
+    char fecha2[14];
+    cout<<"Ingresa las fechas en numeros, con el siguiente formato: añomesdiahora:minutos . Por ejmplo:2021090213:30"<<endl;
+    cout<<"Primero ingrese la fecha más temprana"<<endl;
+    cin>>fecha1;
+    cout<<"Ahora ingrese la fecha más tardía"<<endl;
+    cin>>fecha2;
+    FILE *f;
+    f = fopen("salidaexcel.csv", "wt");
+    ListaCompras *paux=indx;
+    fprintf(f,"Compra ID;Fecha y Hora;Monto;Usuario ID;Nro de Articulo\n");
+
+    while (indx !=NULL) //ver si es srtlen
+    {
+        if ( strcmp(fecha1,paux->compra.FechaHora)&&  strcmp(paux->compra.FechaHora,fecha2))
+    {
+        fprintf(f,"%d;%s;%f;%d;%d\n",compra.CompraID, compra.FechaHora,compra.Monto,compra.UsuarioID,compra.NroArticulo);
+    }
+    indx=indx->sigCompra;
+    fclose(f);
+    }
+    return;
+}
+
+
 
 /*void CrearListaUsuariosActivos(ListaUsuarios *inicio,ListaUsuarios *& inicioListaUs)
 {
@@ -473,8 +570,8 @@ void BuscarClientePorIDoMail(ListaUsuarios *inicio)
 
 */
 
-    int OpcionesMenu()
-    {
+int OpcionesMenu()
+{
         int opcion;
         cout<<"INGRESE OPCION"<<endl ;
         cout<<"1--> Cargar usuarios (modo desarrollo)"<<endl;
@@ -495,8 +592,8 @@ void BuscarClientePorIDoMail(ListaUsuarios *inicio)
         return opcion;
     }
 
-    void Menu(ListaUsuarios *&inicioListaUsuarios, ListaCompras *&inicioLC)
-    {
+void Menu(ListaUsuarios *&inicioListaUsuarios, ListaCompras *&inicioLC)
+{
         int opcion=OpcionesMenu();
         while(opcion)
         {
@@ -527,7 +624,7 @@ void BuscarClientePorIDoMail(ListaUsuarios *inicio)
                 opcion=OpcionesMenu();
                 break;
             case 7://ListarClientesOrdenadosPorImporte
-                //ListarClientesOrdenadosPorImporte();
+                ListarClientesImportes (inicioListaUsuarios);
                 opcion=OpcionesMenu();
                 break;
             case 8://procesar lote compras.
@@ -561,8 +658,8 @@ void BuscarClientePorIDoMail(ListaUsuarios *inicio)
         }
     }
 
-    int main()
-    {
+int main()
+{
         ListaUsuarios *inicioListaUsuarios=NULL;
         ListaUsuarios *inicioListaActivosUsuarios=NULL;
         CargarArchivoUsuarios(inicioListaUsuarios);
@@ -625,4 +722,4 @@ strcpy(pauxLC->compra.FechaHora,"2021022812:20");
        // BorrarListaCompras(inicioListaCompras);
       //  BorrarListaUs(inicioListaActivosUsuarios);
         return 0;
-    }
+}
