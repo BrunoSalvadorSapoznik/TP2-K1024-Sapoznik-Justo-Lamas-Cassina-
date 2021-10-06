@@ -69,7 +69,6 @@ void insertarOrdenado(ListaUsuarios *&lista,  ListaUsuarios p2aux)
     return;
 }
 
-
 void CargarArchivoUsuarios(ListaUsuarios *&inicio)
 {
     FILE *archLU;
@@ -190,6 +189,167 @@ void EscribirListaArchivoClientes(ListaUsuarios* inicioListaUsuarios)
     }
     fclose(archLU);
 }
+
+
+void EscribirListaArchivoCompras(ListaCompras* inicioListaCompras)
+{
+    FILE *archLC;
+    archLC=fopen("comprasprueba.bin","wb+");
+
+    ListaCompras* compra=inicioListaCompras;
+
+    if(archLC!=NULL)
+    {
+
+        while(compra!=NULL)
+        {
+            ListaCompras *psiguiente;
+            psiguiente=compra->sigCompra;
+            compra->sigCompra=NULL;
+            fwrite(compra,sizeof(ListaCompras),1,archLC);
+            compra->sigCompra=psiguiente;
+            compra=compra->sigCompra;
+        }
+        cout<<"archivo escrito exitosamente"<<endl;
+
+
+    }
+    fclose(archLC);
+}
+
+void EscribirLotedeCompras(ListaCompras* inicioListaCompras)
+{
+    FILE *archLC;
+    archLC=fopen("procesados.bin","wb+");
+
+    ListaCompras* compra=inicioListaCompras;
+
+    if(archLC!=NULL)
+    {
+
+        while(compra!=NULL)
+        {
+            ListaCompras *psiguiente;
+            psiguiente=compra->sigCompra;
+            compra->sigCompra=NULL;
+            fwrite(compra,sizeof(ListaCompras),1,archLC);
+            compra->sigCompra=psiguiente;
+            compra=compra->sigCompra;
+        }
+        cout<<"archivo escrito exitosamente"<<endl;
+
+
+    }
+    fclose(archLC);
+}
+
+void CargarArchivoComprasPrueba(ListaCompras  *&inicioListaCompras)
+{
+ FILE *archLC;
+    archLC=fopen("comprasprueba.bin","rb");
+    if(archLC!=NULL)
+    {
+        ListaCompras*paux=NULL;
+        ListaCompras *panterior=NULL;
+        ListaCompras *&inicio=inicioListaCompras;
+        fseek(archLC,0,SEEK_END);
+
+
+        int TamArchivoLista=ftell(archLC);
+        int numElementos=TamArchivoLista/sizeof(ListaCompras);
+
+        cout<<"la cant de elementos es "<<numElementos<<endl;
+        fseek(archLC,0,SEEK_SET);
+
+          if(numElementos>0)
+        {
+
+            cout<<"Leyendo datos..."<<endl;
+            int loop=0;
+            paux=inicio;
+            ListaCompras *panterior=NULL;
+            ListaCompras *p2aux;
+            for(loop;loop<numElementos; loop++)
+            {
+                fseek(archLC,sizeof(ListaCompras)*loop,SEEK_SET);
+              //  fread(inicio,sizeof(ListaCompras),1,archLC);
+
+
+                  if(loop==0)
+                              {
+                                  cout<<" PRIMER ELEMENTO "<<endl;
+                                  inicio=new ListaCompras();
+
+                                inicio->sigCompra=NULL;
+                                  fread(inicio,sizeof(ListaCompras),1,archLC);
+
+                                  panterior=inicio;
+
+                                  //puntero que almacene el anterior para luego vincularlo
+                              }
+                              else{
+                                    cout<<"loop "<<loop<<endl;
+                                       panterior->sigCompra= new ListaCompras();
+                                       paux=panterior->sigCompra;
+                                       fread(panterior->sigCompra,sizeof(ListaCompras),1,archLC);
+                                       panterior->sigCompra->sigCompra=NULL;
+                                       panterior=paux;
+                                 }
+
+             }
+             fclose(archLC);
+           return;
+        }
+             else
+                 {
+                   cout<<"Lista vacía ,agregue elementos"<<endl;
+                   return;
+                  }
+
+    }
+    else
+      {
+    cout<<"falló apertura del archivo lista usuarios"<<endl;
+       }
+
+}
+
+
+void ListarComprasPrueba (ListaCompras *indx)
+{
+
+    cout<<"listando usuarios"<<endl;
+    if(indx!=NULL)
+    {
+        while(indx!=NULL)
+        {
+            cout<<"dir actual: "<<indx<<endl;
+            cout<<" "<<endl;
+            cout<<"id de Compra"<<indx->compra.CompraID<<endl;
+            cout<<" "<<endl;
+            cout<<"fecha Hora de usuario "<<indx->compra.FechaHora<<endl;
+            cout<<" "<<endl;
+            cout<<"Monto :"<<indx->compra.Monto<<endl;
+            cout<<" "<<endl;
+            cout<<"Nro articulo"<<indx->compra.NroArticulo<<endl;
+            cout<<" "<<endl;
+            cout<<"Usuario ID: "<<indx->compra.UsuarioID<<endl;
+            cout<<" "<<endl;
+            cout<<"sig usuario en dir"<<indx->sigCompra<<endl;
+            cout<<" "<<endl;
+            if(indx->sigCompra==NULL)
+            cout<<"elemento siguiente nulo"<<endl;
+            indx=indx->sigCompra;
+            cout<<"ahora indx vale: "<<indx<<endl;
+            cout<<" "<<endl;
+        }
+    }
+    else
+    {
+        cout<<"Lista vacía "<<endl;
+    }
+}
+
 
 void ListarUsuarios (ListaUsuarios *indx)
 {
@@ -371,7 +531,7 @@ void BorrarListaUs(ListaUsuarios *&inicio)
         cout<<"lista borrada satisfactoriamente "<<endl;
     }
 
-void BorrarListaCompras(ListaCompras *indx)
+void BorrarListaCompras(ListaCompras *&indx)
 {
         ListaCompras* paux;
         ListaCompras *pactual;
@@ -379,8 +539,10 @@ void BorrarListaCompras(ListaCompras *indx)
 
         while(paux!=NULL)
         {
+
             pactual=paux;
             paux=paux->sigCompra;
+            cout<<"sig compra "<<paux<<endl;
             delete pactual;
         }
         cout<<"lista Compras borrada satisfactoriamente "<<endl;
@@ -417,6 +579,33 @@ void BuscarClientePorID(ListaUsuarios* inicio)
             }
         }
     }
+
+void BuscarClientePorMail(ListaUsuarios* inicio)
+{
+        char mailingresado[20];
+
+        cout<<"ingrese Mail del usuario"<<endl;
+
+        ListaUsuarios *paux;
+        paux=inicio;
+        cin>>mailingresado;
+
+        while(paux && strcmp(paux->usuarioact.eMail,mailingresado) )
+            {
+                paux=paux->sigUs;
+            }
+            if(paux==NULL)
+            {
+                cout<<"no se encontró el usuario"<<endl;
+            }
+            else
+            {
+             cout<<"Usuario ID: "<<paux->usuarioact.ID<<endl;
+             cout<<"email: "<<paux->usuarioact.eMail<<endl;
+             cout<<"Fecha creacion: "<<paux->usuarioact.FechaCreacion<<endl;
+             cout<<"Importe "<<paux->usuarioact.TotalImporteCompras<<endl;
+            }
+        }
 
 void BuscarClientePorIDoMail(ListaUsuarios *inicio)
 {
@@ -474,6 +663,27 @@ void ListarClientesImportes (ListaUsuarios *indx)
     }
     }
 
+void ProcesarLoteCompras(ListaCompras *inicioLC,ListaUsuarios *&inicioListaUsuarios)
+{
+   ListaUsuarios *pauxLU=inicioListaUsuarios;
+EscribirLotedeCompras(inicioLC);
+    while(inicioLC!=NULL)
+    {
+
+
+        while(pauxLU&&inicioLC->compra.UsuarioID!=pauxLU->usuarioact.ID)
+        {
+            pauxLU=pauxLU->sigUs;
+        }
+        if(pauxLU){
+        pauxLU->usuarioact.TotalImporteCompras+=inicioLC->compra.Monto;
+        }
+        cout<<"procesando sig compra"<<endl;
+        inicioLC=inicioLC->sigCompra;
+    }
+}
+
+/*
 void escribirReporteHTML(ListaCompras *indx)
 {
     char fecha1[14];
@@ -532,44 +742,15 @@ void escribirReporteCSV(ListaCompras *indx)
     return;
 }
 
-
-
-/*void CrearListaUsuariosActivos(ListaUsuarios *inicio,ListaUsuarios *& inicioListaUs)
-{
-    BorrarListaUs(inicioListaUs);
-
-    ListaUsuarios *paux=inicio;
-    ListaUsuarios *panterior=inicioListaUs;
-     ListaUsuarios *p2aux=inicioListaUs;
-     int cont=0; //
-
-
-  while(paux)
-    {
-        if(!cont)
-        {
-            inicioListaUs=new ListaUsuarios();
-            panterior=inicioListaUs;
-        }
-        else
-        {
-            if(paux->usuarioact.activo==true)
-            {
-                panterior->sigUs=new ListaUsuarios();
-                p2aux->usuarioact=paux->usuarioact;
-
-            }
-            else
-            {
-                paux=paux->sigUs;
-            }
-        }
-    }
-    cont++;
-}
-
 */
 
+void FinalizarJornada(ListaUsuarios *&inicioLU,ListaCompras *&inicioLC)
+{
+
+cout<<"Borrando Listas"<<endl;
+ BorrarListaUs(inicioLU);
+ BorrarListaCompras(inicioLC);
+}
 int OpcionesMenu()
 {
         int opcion;
@@ -628,7 +809,7 @@ void Menu(ListaUsuarios *&inicioListaUsuarios, ListaCompras *&inicioLC)
                 opcion=OpcionesMenu();
                 break;
             case 8://procesar lote compras.
-                //ProcesarLoteCompras();
+                ProcesarLoteCompras(inicioLC,inicioListaUsuarios);
                 opcion=OpcionesMenu();
                 break;
             case 9: //Mostrar por pantalla las todas las compras de un cliente dado
@@ -649,7 +830,8 @@ void Menu(ListaUsuarios *&inicioListaUsuarios, ListaCompras *&inicioLC)
               opcion=OpcionesMenu();
               break;
             case 13:
-                //FinalizarJornada(opcion);
+                FinalizarJornada(inicioListaUsuarios,inicioLC);
+                opcion=0;
                 break;
 
 
@@ -665,8 +847,10 @@ int main()
         CargarArchivoUsuarios(inicioListaUsuarios);
         ListaCompras*pauxLC;
 
-        ListaCompras *inicioListaCompras;
+        ListaCompras *inicioListaCompras=NULL;
+/*
 //Compra numero 1
+
         inicioListaCompras= new ListaCompras();
         inicioListaCompras->compra.CompraID=1;
       strcpy(inicioListaCompras->compra.FechaHora,"2021012515:23")  ;
@@ -713,12 +897,58 @@ strcpy(pauxLC->compra.FechaHora,"2021022812:20");
        pauxLC->compra.Monto=4500;
         pauxLC->compra.NroArticulo=23;
         pauxLC->compra.UsuarioID=5;
-        pauxLC->sigCompra=NULL;
+        pauxLC->sigCompra=new ListaCompras();
+        pauxLC=pauxLC->sigCompra;
+//Compra Numero 6
+     pauxLC->compra.CompraID=6;
+      strcpy(pauxLC->compra.FechaHora,"2021100315:30");
+       pauxLC->compra.Monto=5700;
+        pauxLC->compra.NroArticulo=25;
+        pauxLC->compra.UsuarioID=1;
+        pauxLC->sigCompra=new ListaCompras();
+        pauxLC=pauxLC->sigCompra;
 
+//Compra numero 7
+     pauxLC->compra.CompraID=7;
+      strcpy(pauxLC->compra.FechaHora,"2021100711:30");
+       pauxLC->compra.Monto=7700;
+        pauxLC->compra.NroArticulo=42;
+        pauxLC->compra.UsuarioID=3;
+ pauxLC->sigCompra=new ListaCompras();
+        pauxLC=pauxLC->sigCompra;
 
+ // Compra numero 8
+        pauxLC->compra.CompraID=8;
+        strcpy(pauxLC->compra.FechaHora,"2021101018:30");
+        pauxLC->compra.Monto=5900;
+        pauxLC->compra.NroArticulo=34;
+        pauxLC->compra.UsuarioID=2;
+        pauxLC->sigCompra=new ListaCompras();
+        pauxLC=pauxLC->sigCompra;
+        //Compra numero 9
+        pauxLC->compra.CompraID=9;
+        strcpy(pauxLC->compra.FechaHora,"2021112020:55");
+        pauxLC->compra.Monto=6400;
+        pauxLC->compra.NroArticulo=50;
+        pauxLC->compra.UsuarioID=5;
+        pauxLC->sigCompra=new ListaCompras();
+        pauxLC=pauxLC->sigCompra;
+    //compra numero 10;
+    pauxLC->compra.CompraID=10;
+      strcpy(pauxLC->compra.FechaHora,"2021112212:00");
+       pauxLC->compra.Monto=5700;
+        pauxLC->compra.NroArticulo=25;
+        pauxLC->compra.UsuarioID=4;
+ pauxLC->sigCompra=NULL;
+
+ EscribirListaArchivoCompras(inicioListaCompras);
+*/
+ CargarArchivoComprasPrueba(inicioListaCompras);
+
+ ListarComprasPrueba(inicioListaCompras);
  Menu(inicioListaUsuarios,inicioListaCompras);
 
-//BorrarListaUs(inicioListaUsuarios);
+     //BorrarListaUs(inicioListaUsuarios);
        // BorrarListaCompras(inicioListaCompras);
       //  BorrarListaUs(inicioListaActivosUsuarios);
         return 0;
