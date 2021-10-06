@@ -390,7 +390,7 @@ void CargarArchivoProcesados(ListaCompras  *&inicioListaCompras)
 void ListarComprasPrueba (ListaCompras *indx)
 {
 
-    cout<<"listando usuarios"<<endl;
+
     if(indx!=NULL)
     {
         while(indx!=NULL)
@@ -814,6 +814,38 @@ void escribirReporteCSV(ListaCompras *indx)
     return;
 }
 
+void MostrarComprasCliente(ListaCompras*inicioLP)
+{
+ int id;
+ cout<<"Ingrese ID del usuario"<<endl;
+ cin>>id;
+ ListaCompras *indx=inicioLP;
+    if(indx!=NULL)
+    {
+        while(indx!=NULL)
+        {
+            if(indx->compra.CompraID==id){
+            cout<<"dir actual: "<<indx<<endl;
+            cout<<" "<<endl;
+            cout<<"id de Compra"<<indx->compra.CompraID<<endl;
+            cout<<" "<<endl;
+            cout<<"fecha Hora de usuario "<<indx->compra.FechaHora<<endl;
+            cout<<" "<<endl;
+            cout<<"Monto :"<<indx->compra.Monto<<endl;
+            cout<<" "<<endl;
+            cout<<"Nro articulo"<<indx->compra.NroArticulo<<endl;
+            cout<<" "<<endl;
+            cout<<"Usuario ID: "<<indx->compra.UsuarioID<<endl;
+            cout<<" "<<endl;
+            cout<<"sig usuario en dir"<<indx->sigCompra<<endl;
+            cout<<" "<<endl;
+             indx=indx->sigCompra;
+
+            }
+
+        }
+}
+}
 
 void FinalizarJornada(ListaUsuarios *&inicioLU,ListaCompras *&inicioLC)
 {
@@ -821,6 +853,7 @@ void FinalizarJornada(ListaUsuarios *&inicioLU,ListaCompras *&inicioLC)
 cout<<"Borrando Listas"<<endl;
  BorrarListaUs(inicioLU);
  BorrarListaCompras(inicioLC);
+//agregar borrar lista procesados
 }
 int OpcionesMenu()
 {
