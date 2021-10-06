@@ -162,8 +162,6 @@ else
 
 }
 
-    //Tamaño de archivo cout<<ftell(archLU)<<endl;
-
 void EscribirListaArchivoClientes(ListaUsuarios* inicioListaUsuarios)
 {
     FILE *archLU;
@@ -189,7 +187,6 @@ void EscribirListaArchivoClientes(ListaUsuarios* inicioListaUsuarios)
     }
     fclose(archLU);
 }
-
 
 void EscribirListaArchivoCompras(ListaCompras* inicioListaCompras)
 {
@@ -385,8 +382,6 @@ void CargarArchivoProcesados(ListaCompras  *&inicioListaCompras)
 
 }
 
-
-
 void ListarComprasPrueba (ListaCompras *indx)
 {
 
@@ -421,7 +416,6 @@ void ListarComprasPrueba (ListaCompras *indx)
         cout<<"Lista vacía "<<endl;
     }
 }
-
 
 void ListarUsuarios (ListaUsuarios *indx)
 {
@@ -689,7 +683,7 @@ void BuscarClientePorIDoMail(ListaUsuarios *inicio)
     {
     case 1: BuscarClientePorID(inicio);
     break;
-    case 2://BuscarClientePorMail(inicio);
+    case 2:BuscarClientePorMail(inicio);
   break;
     }
 }
@@ -755,8 +749,7 @@ EscribirLotedeCompras(inicioLC);
     }
 }
 
-
-void escribirReporteHTML(ListaCompras *indx)
+void escribirReporteHTML(ListaCompras *paux)
 {
     char fecha1[14];
     char fecha2[14];
@@ -766,20 +759,19 @@ void escribirReporteHTML(ListaCompras *indx)
     cout<<"Ahora ingrese la fecha más tardía"<<endl;
     cin>>fecha2;
     FILE *f;
-    ListaCompras *paux=indx;
     f = fopen("salidahtml.html", "wt");
     fprintf(f,"<html><body>\n");
     fprintf(f,"<h1>Reporte de compras de usuraios</h1>\n");
     fprintf(f,"<table border=1>\n");
     fprintf(f,"<th>Compra ID</th><th>Fecha y Hora</th><th>Monto</th><th>Usuario ID</th><th>Nro de Articulo</th>\n");
-    while (indx !=NULL)
+    while (paux !=NULL)
     {
-        if ( strcmp(fecha1,paux->compra.FechaHora)&&  strcmp(paux->compra.FechaHora,fecha2)){
+        if ( strcmp(paux->compra.FechaHora,fecha1 )&&  strcmp(fecha2,paux->compra.FechaHora)){
         fprintf(f,"<tr>\n");
         fprintf(f,"<td>%d</td><td>%s</td><td>%f</td><td>%d</td><td>%d</td>\n",paux->compra.CompraID, paux->compra.FechaHora,paux->compra.Monto,paux->compra.UsuarioID,paux->compra.NroArticulo);
         fprintf(f,"</tr>\n");
         }
-        indx=indx->sigCompra;
+        paux=paux->sigCompra;
     }
     fprintf(f, "</table>");
     fprintf(f, "</body>");
@@ -788,7 +780,7 @@ void escribirReporteHTML(ListaCompras *indx)
     return;
 }
 
-void escribirReporteCSV(ListaCompras *indx)
+void escribirReporteCSV(ListaCompras *paux)
 {
     char fecha1[14];
     char fecha2[14];
@@ -799,18 +791,17 @@ void escribirReporteCSV(ListaCompras *indx)
     cin>>fecha2;
     FILE *f;
     f = fopen("salidaexcel.csv", "wt");
-    ListaCompras *paux=indx;
     fprintf(f,"Compra ID;Fecha y Hora;Monto;Usuario ID;Nro de Articulo\n");
 
-    while (indx !=NULL) //ver si es srtlen
+    while (paux !=NULL) //ver si es srtlen
     {
-        if ( strcmp(fecha1,paux->compra.FechaHora)&&  strcmp(paux->compra.FechaHora,fecha2))
+        if ( strcmp(paux->compra.FechaHora,fecha1)&&  strcmp(fecha2,paux->compra.FechaHora))
     {
         fprintf(f,"%d;%s;%f;%d;%d\n",paux->compra.CompraID,paux->compra.FechaHora,paux->compra.Monto,paux->compra.UsuarioID,paux->compra.NroArticulo);
     }
-    indx=indx->sigCompra;
-    fclose(f);
+    paux=paux->sigCompra;
     }
+    fclose(f);
     return;
 }
 
@@ -839,10 +830,8 @@ void MostrarComprasCliente(ListaCompras*inicioLP)
             cout<<" "<<endl;
             cout<<"sig usuario en dir"<<indx->sigCompra<<endl;
             cout<<" "<<endl;
-             indx=indx->sigCompra;
-
             }
-
+        indx=indx->sigCompra;
         }
 }
 }
@@ -855,23 +844,24 @@ cout<<"Borrando Listas"<<endl;
  BorrarListaCompras(inicioLC);
 //agregar borrar lista procesados
 }
+
 int OpcionesMenu()
 {
         int opcion;
         cout<<"INGRESE OPCION"<<endl ;
-        cout<<"1--> Cargar usuarios (modo desarrollo)"<<endl;
-        cout<<"2--> Listar Usuario (modo dev)"<<endl;
-        cout<<"3--Escribir List Usuarios Archivo (modo dev)"<<endl;
-        cout<<"4--Agregar nuevo usuario"<<endl;
-        cout<<"5--Desactivar usuario Existente"<<endl;
-        cout<<"6--Buscar cliente por ID o por mail "<<endl;
-        cout<<"7--Listar clientes ordenados por importe (NO DISPONIBLE)"<<endl;
-        cout<<"8-Procesar lote de compras (NO DISPONIBLE)"<<endl;
-        cout<<"9-Mostrar compras realizadas de un cliente dado(NO DISPONIBLE)"<<endl;
-        cout<<"10--Generar reporte HTML de compras realizadas en dos fechas (NO DISPONIBLE)"<<endl;
-        cout<<"11-- Generar reporte CSV de compras realizadas en dos fechas (NO DISPONIBLE)" <<endl;
-        cout<<"12--- Borrar lista"<<endl;
-        cout<<"13-Finalizar jornada"<<endl;
+        cout<<"1--- Cargar usuarios "<<endl;
+        cout<<"2--- Listar Usuario "<<endl;
+        cout<<"3--- Escribir List Usuarios Archivo "<<endl;
+        cout<<"4--- Agregar nuevo usuario "<<endl;
+        cout<<"5--- Desactivar usuario Existente"<<endl;
+        cout<<"6--- Buscar cliente por ID o por mail "<<endl;
+        cout<<"7--- Listar clientes ordenados por importe "<<endl;
+        cout<<"8--- Procesar lote de compras "<<endl;
+        cout<<"9--- Mostrar compras realizadas de un cliente dado "<<endl;
+        cout<<"10-- Generar reporte HTML de compras realizadas en dos fechas "<<endl;
+        cout<<"11-- Generar reporte CSV de compras realizadas en dos fechas " <<endl;
+        cout<<"12-- Borrar lista "<<endl;
+        cout<<"13-- Finalizar jornada "<<endl;
 
         cin>>opcion;
         return opcion;
@@ -905,7 +895,7 @@ void Menu(ListaUsuarios *&inicioListaUsuarios, ListaCompras *&inicioLC,ListaComp
                 opcion=OpcionesMenu();
                 break;
             case 6:// Buscar cliente por ID o por Mail.
-                //BuscarClientePorIDoPorMail();
+                BuscarClientePorIDoMail(inicioListaUsuarios);
                 opcion=OpcionesMenu();
                 break;
             case 7://ListarClientesOrdenadosPorImporte
@@ -916,9 +906,8 @@ void Menu(ListaUsuarios *&inicioListaUsuarios, ListaCompras *&inicioLC,ListaComp
                 ProcesarLoteCompras(inicioLC,inicioListaUsuarios);
                 opcion=OpcionesMenu();
                 break;
-            case 9: //Mostrar por pantalla las todas las compras de un cliente dado
-                // desde el Archivo procesadfo.bin
-                //MostrarComprasCliente();
+            case 9: //Mostrar por pantalla las todas las compras de un cliente dado desde el Archivo procesadfo.bin
+                MostrarComprasCliente(inicioLP);
                 opcion=OpcionesMenu();
                 break;
             case 10: // Mostrar compras realizadas entre dos fechas en un reporte html,.Mostrando también el total de compras.
@@ -934,7 +923,7 @@ void Menu(ListaUsuarios *&inicioListaUsuarios, ListaCompras *&inicioLC,ListaComp
               BorrarListaUs(inicioListaUsuarios);
               opcion=OpcionesMenu();
               break;
-            case 13:
+            case 13: //ger tiene que modificar
                 FinalizarJornada(inicioListaUsuarios,inicioLC);
                 opcion=0;
                 break;
@@ -1048,12 +1037,12 @@ strcpy(pauxLC->compra.FechaHora,"2021022812:20");
 
  EscribirListaArchivoCompras(inicioListaCompras);
 */
- CargarArchivoComprasPrueba(inicioListaCompras);
-CargarArchivoProcesados(inicioListaProcesados);
- ListarComprasPrueba(inicioListaCompras);
- Menu(inicioListaUsuarios,inicioListaCompras,inicioListaProcesados);
+    CargarArchivoComprasPrueba(inicioListaCompras);
+    CargarArchivoProcesados(inicioListaProcesados);
+    ListarComprasPrueba(inicioListaCompras);
+    Menu(inicioListaUsuarios,inicioListaCompras,inicioListaProcesados);
 
-     //BorrarListaUs(inicioListaUsuarios);
+        //BorrarListaUs(inicioListaUsuarios);
        // BorrarListaCompras(inicioListaCompras);
       //  BorrarListaUs(inicioListaActivosUsuarios);
         return 0;
