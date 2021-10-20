@@ -95,69 +95,25 @@ void CargarArchivoUsuarios(ListaUsuarios *&inicio)
             ListaUsuarios p2aux;
             for(loop;loop<numElementos; loop++)
             {
-                fseek(archLU,sizeof(ListaUsuarios)*loop,SEEK_SET);
+
                 fread(&p2aux,sizeof(ListaUsuarios),1,archLU);
                  cout<<"p2aux.usuarioact.ID "<<p2aux.usuarioact.ID<<endl;
 
                   insertarOrdenado(inicio,p2aux);
 
-                /*
-
-                              //   cout<<"loop "<<loop<<endl;
-                              //mover puntero hacia locación actual
-
-
-
-                              if(loop==0)
-                              {
-                                  cout<<" PRIMER ELEMENTO "<<endl;
-                                  inicio= new ListaUsuarios();
-
-                                  fread(inicio,sizeof(ListaUsuarios),1,archLU);
-                                  inicio->sigUs=paux;
-                                  panterior=inicio;
-
-                                  //puntero que almacene el anterior para luego vincularlo
-                              }
-
-                              else
-                              {
-                                  fread(p2aux,sizeof(ListaUsuarios),1,archLU);
-                                  while(paux && paux->usuarioact.TotalImporteCompras<p2aux->usuarioact.TotalImporteCompras )
-                                  {
-                                      panterior=paux;
-                                      paux=paux->sigUs;
-                                  }
-                                  if(paux!=inicio)
-                                  {
-                                      panterior->sigUs= new ListaUsuarios();
-                                      fread(panterior->sigUs,sizeof(ListaUsuarios),1,archLU);
-                                      panterior->sigUs->sigUs=paux;
-
-                                  }
-                                  /*
-                                       panterior->sigUs= new ListaUsuarios();
-                                       paux=panterior->sigUs;
-                                       fread(paux,sizeof(ListaUsuarios),1,archLU);
-                                       paux->sigUs=NULL;
-                                       panterior=paux;
-
-                                       // cout<<"nuevoElemento"<<paux->usuarioact.ID<<endl;
-
-            */
         }
         fclose(archLU);
         return ;
     }
     else
     {
-        cout<<"Lista vacía ,agregue elementos"<<endl;
+        cout<<"Lista vacia ,agregue elementos"<<endl;
         return;
     }
 }
 else
 {
-    cout<<"falló apertura del archivo lista usuarios"<<endl;
+    cout<<"fallo apertura del archivo lista usuarios"<<endl;
 }
 
 }
@@ -269,23 +225,17 @@ void CargarArchivoComprasPrueba(ListaCompras  *&inicioListaCompras)
             for(loop;loop<numElementos; loop++)
             {
                 fseek(archLC,sizeof(ListaCompras)*loop,SEEK_SET);
-              //  fread(inicio,sizeof(ListaCompras),1,archLC);
-
-
-                  if(loop==0)
+                if(loop==0)
                               {
-                                  cout<<" PRIMER ELEMENTO "<<endl;
+
                                   inicio=new ListaCompras();
-
-                                inicio->sigCompra=NULL;
+                                  inicio->sigCompra=NULL;
                                   fread(inicio,sizeof(ListaCompras),1,archLC);
-
                                   panterior=inicio;
 
-                                  //puntero que almacene el anterior para luego vincularlo
                               }
                               else{
-                                    cout<<"loop "<<loop<<endl;
+
                                        panterior->sigCompra= new ListaCompras();
                                        paux=panterior->sigCompra;
                                        fread(panterior->sigCompra,sizeof(ListaCompras),1,archLC);
@@ -299,14 +249,14 @@ void CargarArchivoComprasPrueba(ListaCompras  *&inicioListaCompras)
         }
              else
                  {
-                   cout<<"Lista vacía ,agregue elementos"<<endl;
+                   cout<<"Lista vacia ,agregue elementos"<<endl;
                    return;
                   }
 
     }
     else
       {
-    cout<<"falló apertura del archivo lista usuarios"<<endl;
+    cout<<"fallo apertura del archivo lista usuarios"<<endl;
        }
 
 }
@@ -340,8 +290,6 @@ void CargarArchivoProcesados(ListaCompras  *&inicioListaCompras)
             for(loop;loop<numElementos; loop++)
             {
                 fseek(archLC,sizeof(ListaCompras)*loop,SEEK_SET);
-              //  fread(inicio,sizeof(ListaCompras),1,archLC);
-
 
                   if(loop==0)
                               {
@@ -350,10 +298,8 @@ void CargarArchivoProcesados(ListaCompras  *&inicioListaCompras)
 
                                 inicio->sigCompra=NULL;
                                   fread(inicio,sizeof(ListaCompras),1,archLC);
-
                                   panterior=inicio;
 
-                                  //puntero que almacene el anterior para luego vincularlo
                               }
                               else{
                                     cout<<"loop "<<loop<<endl;
@@ -370,14 +316,14 @@ void CargarArchivoProcesados(ListaCompras  *&inicioListaCompras)
         }
              else
                  {
-                   cout<<"Lista vacía ,agregue elementos"<<endl;
+                   cout<<"Lista vacia ,agregue elementos"<<endl;
                    return;
                   }
 
     }
     else
       {
-    cout<<"falló apertura del archivo lista usuarios"<<endl;
+    cout<<"fallo apertura del archivo lista usuarios"<<endl;
        }
 
 }
@@ -390,30 +336,26 @@ void ListarComprasPrueba (ListaCompras *indx)
     {
         while(indx!=NULL)
         {
+            cout<<endl;
+            cout<<"-----------------------------"<<endl;
             cout<<"dir actual: "<<indx<<endl;
-            cout<<" "<<endl;
             cout<<"id de Compra"<<indx->compra.CompraID<<endl;
-            cout<<" "<<endl;
             cout<<"fecha Hora de usuario "<<indx->compra.FechaHora<<endl;
-            cout<<" "<<endl;
             cout<<"Monto :"<<indx->compra.Monto<<endl;
-            cout<<" "<<endl;
             cout<<"Nro articulo"<<indx->compra.NroArticulo<<endl;
-            cout<<" "<<endl;
             cout<<"Usuario ID: "<<indx->compra.UsuarioID<<endl;
-            cout<<" "<<endl;
             cout<<"sig usuario en dir"<<indx->sigCompra<<endl;
-            cout<<" "<<endl;
             if(indx->sigCompra==NULL)
             cout<<"elemento siguiente nulo"<<endl;
             indx=indx->sigCompra;
             cout<<"ahora indx vale: "<<indx<<endl;
+            cout<<"-----------------------------"<<endl;
             cout<<" "<<endl;
         }
     }
     else
     {
-        cout<<"Lista vacía "<<endl;
+        cout<<"Lista vacia "<<endl;
     }
 }
 
@@ -423,32 +365,41 @@ void ListarUsuarios (ListaUsuarios *indx)
     cout<<"listando usuarios"<<endl;
     if(indx!=NULL)
     {
+        cout<<endl<<endl;
+        cout<<"----------------------------------------------------"<<endl;
+
         while(indx!=NULL)
         {
+            if (indx->usuarioact.activo){
             cout<<"dir actual: "<<indx<<endl;
-            cout<<" "<<endl;
+
             cout<<"id de usuario "<<indx->usuarioact.ID<<endl;
-            cout<<" "<<endl;
+
             cout<<"email de usuario "<<indx->usuarioact.eMail<<endl;
-            cout<<" "<<endl;
+
             cout<<"estado de actividad :"<<indx->usuarioact.activo<<endl;
-            cout<<" "<<endl;
+
             cout<<"importe actual: "<<indx->usuarioact.TotalImporteCompras<<endl;
-            cout<<" "<<endl;
-            cout<<"fecha de creación: "<<indx->usuarioact.FechaCreacion<<endl;
-            cout<<" "<<endl;
+
+            cout<<"fecha de creacion: "<<indx->usuarioact.FechaCreacion<<endl;
+
             cout<<"sig usuario en dir"<<indx->sigUs<<endl;
-            cout<<" "<<endl;
+
             if(indx->sigUs==NULL)
             cout<<"elemento siguiente nulo"<<endl;
             indx=indx->sigUs;
             cout<<"ahora indx vale: "<<indx<<endl;
             cout<<" "<<endl;
+            cout<<"----------------------------------------------------"<<endl;
+            cout<<endl<<endl;
+        }
+        else
+            indx=indx->sigUs;
         }
     }
     else
     {
-        cout<<"Lista vacía "<<endl;
+        cout<<"Lista vacia "<<endl;
     }
 }
 
@@ -460,18 +411,15 @@ void AgregarnuevoUSuario(ListaUsuarios *&inicio)
 
     if(inicio)
     {
-        cout<<"añadir nuevo elemento"<<endl;
+        cout<<"anadir nuevo elemento"<<endl;
         nuevoUsuario->sigUs=inicio;
         cout<<"Ingrese  ID usuario"<<endl;
         cin>>nuevoUsuario->usuarioact.ID;
         cout<<"email: "<<endl;
         cin>>nuevoUsuario->usuarioact.eMail;
-        cout<<"Ingrese Fecha Creación :"<<endl;
+        cout<<"Ingrese Fecha Creacion :"<<endl;
         cin>>nuevoUsuario->usuarioact.FechaCreacion;
         nuevoUsuario->usuarioact.activo=true;
-        // agregar monto de prueba
-        cout<<"monto de prueba"<<endl;
-        cin>>nuevoUsuario->usuarioact.TotalImporteCompras;
         inicio=nuevoUsuario;
     }
     else
@@ -482,7 +430,7 @@ void AgregarnuevoUSuario(ListaUsuarios *&inicio)
         cin>>nuevoUsuario->usuarioact.ID;
         cout<<"email: "<<endl;
         cin>>nuevoUsuario->usuarioact.eMail;
-        cout<<"Ingrese Fecha Creación :"<<endl;
+        cout<<"Ingrese Fecha Creacion :"<<endl;
         cin>>nuevoUsuario->usuarioact.FechaCreacion;
         nuevoUsuario->usuarioact.activo=true;
 
@@ -497,7 +445,7 @@ void DesactivarUsuarioExistente( ListaUsuarios *&inicio)
 {
     int idbuscada;
     cout<<"ingrese id del usuario"<<endl;
-    ListaUsuarios *paux=inicio; //ver si es inicio o indx
+    ListaUsuarios *paux=inicio;
     cin>>idbuscada;
     if(idbuscada<0)
     {
@@ -512,7 +460,7 @@ void DesactivarUsuarioExistente( ListaUsuarios *&inicio)
         }
         if(paux==NULL)
         {
-            cout<<"no se encontró el ID"<<endl;
+            cout<<"no se encontro el ID"<<endl;
         }
         paux->usuarioact.activo=false;
         cout<<"usuario "<<paux->usuarioact.ID<<"  fue desactivado"<<endl;
@@ -634,14 +582,26 @@ void BuscarClientePorID(ListaUsuarios* inicio)
             }
             if(paux==NULL)
             {
-                cout<<"no se encontró el ID"<<endl;
+                cout<<"no se encontro el ID"<<endl;
             }
             else
             {
+                if (paux->usuarioact.activo){
+             cout<<endl;
              cout<<"Usuario ID: "<<paux->usuarioact.ID<<endl;
              cout<<"email: "<<paux->usuarioact.eMail<<endl;
              cout<<"Fecha creacion: "<<paux->usuarioact.FechaCreacion<<endl;
              cout<<"Importe "<<paux->usuarioact.TotalImporteCompras<<endl;
+                }
+                else{
+            cout<<endl;
+            cout<<"--El usuario ya no se encuentra activo. Sus datos son los siguientes:--"<<endl;
+            cout<<endl;
+             cout<<"Usuario ID: "<<paux->usuarioact.ID<<endl;
+             cout<<"email: "<<paux->usuarioact.eMail<<endl;
+             cout<<"Fecha creacion: "<<paux->usuarioact.FechaCreacion<<endl;
+             cout<<"Importe "<<paux->usuarioact.TotalImporteCompras<<endl;
+                }
             }
         }
     }
@@ -662,14 +622,26 @@ void BuscarClientePorMail(ListaUsuarios* inicio)
             }
             if(paux==NULL)
             {
-                cout<<"no se encontró el usuario"<<endl;
+                cout<<"no se encontro el usuario"<<endl;
             }
             else
             {
+                if (paux->usuarioact.activo){
+             cout<<endl;
              cout<<"Usuario ID: "<<paux->usuarioact.ID<<endl;
              cout<<"email: "<<paux->usuarioact.eMail<<endl;
              cout<<"Fecha creacion: "<<paux->usuarioact.FechaCreacion<<endl;
              cout<<"Importe "<<paux->usuarioact.TotalImporteCompras<<endl;
+                }
+                else{
+            cout<<endl;
+            cout<<"--El usuario ya no se encuentra activo. Sus datos son los siguientes:--"<<endl;
+            cout<<endl;
+            cout<<"Usuario ID: "<<paux->usuarioact.ID<<endl;
+             cout<<"email: "<<paux->usuarioact.eMail<<endl;
+             cout<<"Fecha creacion: "<<paux->usuarioact.FechaCreacion<<endl;
+             cout<<"Importe "<<paux->usuarioact.TotalImporteCompras<<endl;
+                }
             }
         }
 
@@ -691,7 +663,7 @@ void BuscarClientePorIDoMail(ListaUsuarios *inicio)
 void ListarClientesImportes (ListaUsuarios *indx)
 {
 
-    cout<<"listando clientes según importes, si está activo"<<endl;
+    cout<<"listando clientes segun importes, si esta activo"<<endl;
     ListaUsuarios *paux=indx;//ver si es inicio o indx
     if(indx!=NULL)
     {
@@ -708,7 +680,7 @@ void ListarClientesImportes (ListaUsuarios *indx)
             cout<<" "<<endl;
             cout<<"importe actual: "<<indx->usuarioact.TotalImporteCompras<<endl;
             cout<<" "<<endl;
-            cout<<"fecha de creación: "<<indx->usuarioact.FechaCreacion<<endl;
+            cout<<"fecha de creacion: "<<indx->usuarioact.FechaCreacion<<endl;
             cout<<" "<<endl;
             cout<<"sig usuario en dir"<<indx->sigUs<<endl;
             cout<<" "<<endl;
@@ -725,7 +697,7 @@ void ListarClientesImportes (ListaUsuarios *indx)
     }
     else
     {
-        cout<<"Lista vacía "<<endl;
+        cout<<"Lista vacia "<<endl;
     }
     }
 
@@ -753,10 +725,10 @@ void escribirReporteHTML(ListaCompras *paux)
 {
     char fecha1[14];
     char fecha2[14];
-    cout<<"Ingresa las fechas en numeros, con el siguiente formato: añomesdiahora:minutos . Por ejmplo:2021090213:30"<<endl;
-    cout<<"Primero ingrese la fecha más temprana"<<endl;
+    cout<<"Ingresa las fechas en numeros, con el siguiente formato: anomesdiahora:minutos . Por ejemplo:2021090213:30"<<endl;
+    cout<<"Primero ingrese la fecha mas temprana"<<endl;
     cin>>fecha1;
-    cout<<"Ahora ingrese la fecha más tardía"<<endl;
+    cout<<"Ahora ingrese la fecha mas tardia"<<endl;
     cin>>fecha2;
     FILE *f;
     f = fopen("salidahtml.html", "wt");
@@ -784,10 +756,10 @@ void escribirReporteCSV(ListaCompras *paux)
 {
     char fecha1[14];
     char fecha2[14];
-    cout<<"Ingresa las fechas en numeros, con el siguiente formato: añomesdiahora:minutos . Por ejmplo:2021090213:30"<<endl;
-    cout<<"Primero ingrese la fecha más temprana"<<endl;
+    cout<<"Ingresa las fechas en numeros, con el siguiente formato: anomesdiahora:minutos . Por ejemplo:2021090213:30"<<endl;
+    cout<<"Primero ingrese la fecha mas temprana"<<endl;
     cin>>fecha1;
-    cout<<"Ahora ingrese la fecha más tardía"<<endl;
+    cout<<"Ahora ingrese la fecha mas tardia"<<endl;
     cin>>fecha2;
     FILE *f;
     f = fopen("salidaexcel.csv", "wt");
@@ -816,18 +788,13 @@ void MostrarComprasCliente(ListaCompras*inicioLP)
         while(indx!=NULL)
         {
             if(indx->compra.CompraID==id){
+            cout<<endl;
             cout<<"dir actual: "<<indx<<endl;
-            cout<<" "<<endl;
             cout<<"id de Compra"<<indx->compra.CompraID<<endl;
-            cout<<" "<<endl;
             cout<<"fecha Hora de usuario "<<indx->compra.FechaHora<<endl;
-            cout<<" "<<endl;
             cout<<"Monto :"<<indx->compra.Monto<<endl;
-            cout<<" "<<endl;
             cout<<"Nro articulo"<<indx->compra.NroArticulo<<endl;
-            cout<<" "<<endl;
             cout<<"Usuario ID: "<<indx->compra.UsuarioID<<endl;
-            cout<<" "<<endl;
             cout<<"sig usuario en dir"<<indx->sigCompra<<endl;
             cout<<" "<<endl;
             }
@@ -851,7 +818,7 @@ int OpcionesMenu()
         cout<<"INGRESE OPCION"<<endl ;
         cout<<"1--- Cargar usuarios "<<endl;
         cout<<"2--- Listar Usuario "<<endl;
-        cout<<"3--- Escribir List Usuarios Archivo "<<endl;
+        cout<<"3--- Escribir Lista Usuarios Archivo (funcion de prueba)"<<endl;
         cout<<"4--- Agregar nuevo usuario "<<endl;
         cout<<"5--- Desactivar usuario Existente"<<endl;
         cout<<"6--- Buscar cliente por ID o por mail "<<endl;
@@ -872,6 +839,7 @@ void Menu(ListaUsuarios *&inicioListaUsuarios, ListaCompras *&inicioLC,ListaComp
         int opcion=OpcionesMenu();
         while(opcion)
         {
+            if (0<opcion && opcion<14){
             switch(opcion)
             {
             case 1: //(para verificar que se hayan cargado exitosamente los clientes en proxima ejecucion)
@@ -928,9 +896,15 @@ void Menu(ListaUsuarios *&inicioListaUsuarios, ListaCompras *&inicioLC,ListaComp
                 opcion=0;
                 break;
 
-
+            }
 
             }
+            else {
+            cout<< "--Opcion no valida--"<<endl;
+            cout<<endl;
+            opcion=OpcionesMenu();
+            }
+
         }
     }
 
@@ -1042,8 +1016,5 @@ strcpy(pauxLC->compra.FechaHora,"2021022812:20");
     ListarComprasPrueba(inicioListaCompras);
     Menu(inicioListaUsuarios,inicioListaCompras,inicioListaProcesados);
 
-        //BorrarListaUs(inicioListaUsuarios);
-       // BorrarListaCompras(inicioListaCompras);
-      //  BorrarListaUs(inicioListaActivosUsuarios);
         return 0;
 }
