@@ -165,7 +165,7 @@ void EscribirListaArchivoClientesActivos(ListaUsuarios* inicioListaUsuarios)
             usuario=usuario->sigUs;
    }
    else{
-    usuario=usuario->sigUs
+    usuario=usuario->sigUs;
    }
         }
 
@@ -557,9 +557,9 @@ void OrdenarListaPorImporte(ListaUsuarios *&inicio)
 }
 
 
-void BorrarListaProcesado(ListaCompras &indx)
+void BorrarListaProcesado(ListaCompras *&indx)
 {
-        ListaCompras paux;
+        ListaCompras *paux;
         ListaCompras *pactual;
         paux=indx;
 
@@ -857,13 +857,14 @@ void MostrarComprasCliente(ListaCompras*inicioLP)
 }
 }
 
-void FinalizarJornada(ListaUsuarios *&inicioLU,ListaCompras *&inicioLC)
+void FinalizarJornada(ListaUsuarios *&inicioLU,ListaCompras *&inicioLC,ListaCompras *& inicioLP)
 {
 
 cout<<"Borrando Listas"<<endl;
 EscribirListaArchivoClientesActivos(inicioLU);
  BorrarListaUs(inicioLU);
  BorrarListaCompras(inicioLC);
+ BorrarListaProcesado(inicioLP);
 //agregar borrar lista procesados
 }
 
@@ -947,7 +948,7 @@ void Menu(ListaUsuarios *&inicioListaUsuarios, ListaCompras *&inicioLC,ListaComp
               opcion=OpcionesMenu();
               break;
             case 13: //ger tiene que modificar
-                FinalizarJornada(inicioListaUsuarios,inicioLC);
+                FinalizarJornada(inicioListaUsuarios,inicioLC,inicioLP);
                 opcion=0;
                 break;
 
