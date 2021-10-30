@@ -144,6 +144,41 @@ void EscribirListaArchivoClientes(ListaUsuarios* inicioListaUsuarios)
     fclose(archLU);
 }
 
+void EscribirListaArchivoClientesActivos(ListaUsuarios* inicioListaUsuarios)
+{
+    FILE *archLU;
+    archLU=fopen("clientes.bin","wb+");
+
+    ListaUsuarios* usuario=inicioListaUsuarios;
+
+    if(archLU!=NULL)
+    {
+
+        while(usuario!=NULL)
+        {
+   if(usuario->usuarioact.activo){
+            ListaUsuarios *psiguiente;
+            psiguiente=usuario->sigUs;
+            usuario->sigUs=NULL;
+            fwrite(usuario,sizeof(ListaUsuarios),1,archLU);
+            usuario->sigUs=psiguiente;
+            usuario=usuario->sigUs;
+   }
+   else{
+    usuario=usuario->sigUs
+   }
+        }
+
+        cout<<"archivo escrito exitosamente"<<endl;
+
+
+    }
+    fclose(archLU);
+}
+
+
+
+
 void EscribirListaArchivoCompras(ListaCompras* inicioListaCompras)
 {
     FILE *archLC;
@@ -521,6 +556,25 @@ void OrdenarListaPorImporte(ListaUsuarios *&inicio)
 
 }
 
+
+void BorrarListaProcesado(ListaCompras &indx)
+{
+        ListaCompras paux;
+        ListaCompras *pactual;
+        paux=indx;
+
+        while(paux!=NULL)
+        {
+
+            pactual=paux;
+            paux=paux->sigCompra;
+            cout<<"sig compra "<<paux<<endl;
+            delete pactual;
+        }
+        cout<<"lista Compras procesadas borrada satisfactoriamente "<<endl;
+    }
+
+
 void BorrarListaUs(ListaUsuarios *&inicio)
 {
         ListaUsuarios* paux;
@@ -807,6 +861,7 @@ void FinalizarJornada(ListaUsuarios *&inicioLU,ListaCompras *&inicioLC)
 {
 
 cout<<"Borrando Listas"<<endl;
+EscribirListaArchivoClientesActivos(inicioLU);
  BorrarListaUs(inicioLU);
  BorrarListaCompras(inicioLC);
 //agregar borrar lista procesados
